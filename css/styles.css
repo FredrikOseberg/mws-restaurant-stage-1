@@ -289,17 +289,26 @@ nav h1 a {
 }
 #reviews-list li {
   background-color: #fff;
-  border: 2px solid #f3f3f3;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
+  padding: 20px;
   position: relative;
   width: 85%;
+  box-shadow: 2px 2px 2px rgba(190, 190, 190, 0.4);
+  border-radius: 3px;
 }
 #reviews-list li p {
   margin: 0 0 10px;
+}
+#reviews-list .review-rating-container {
+  margin-bottom: 10px;
+}
+
+#reviews-list .reviews-star {
+  color: gold;
+  margin: 0 1px;
 }
 #restaurant-hours td {
   color: #666;
