@@ -138,12 +138,23 @@ createStarRatingHTML = stars => {
  */
 createReviewHTML = review => {
   const li = document.createElement('li');
+  const personIcon = document.createElement('i');
+  personIcon.className = 'fas fa-user';
+
+  const personIconContainer = document.createElement('div');
+  personIconContainer.className = 'review-person-icon';
+  personIconContainer.appendChild(personIcon);
+
   const name = document.createElement('p');
-  name.innerHTML = review.name;
+  const nameText = document.createTextNode(review.name);
+  name.appendChild(personIconContainer);
+  name.appendChild(nameText);
+  name.className = 'review-person-name';
   li.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
+  date.className = 'review-date';
   li.appendChild(date);
 
   const rating = createStarRatingHTML(review.rating);
@@ -151,6 +162,7 @@ createReviewHTML = review => {
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.className = 'review-comment';
   li.appendChild(comments);
 
   return li;

@@ -305,7 +305,31 @@ nav h1 a {
 #reviews-list .review-rating-container {
   margin-bottom: 10px;
 }
-
+#reviews-list .review-person-icon {
+  padding: 10px;
+  color: #585858;
+  margin-right: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+#reviews-list .review-person-name {
+  color: #000;
+  font-size: 1rem;
+}
+#reviews-list .review-date {
+  font-style: italic;
+  color: #585858;
+  font-size: 0.9rem;
+}
+#reviews-list .review-comment {
+  color: #585858;
+  line-height: 1.5;
+  font-size: 0.8rem;
+}
 #reviews-list .reviews-star {
   color: gold;
   margin: 0 1px;
