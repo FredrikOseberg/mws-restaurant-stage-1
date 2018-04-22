@@ -386,4 +386,20 @@ nav h1 a {
     text-align: center;
     margin-top: 20px;
   }
+
+  table#restaurant-hours {
+    width: 50%;
+    margin: 10px auto;
+  }
+
+  #restaurant-hours td {
+    color: #666;
+    width: 50%;
+    font-size: 1rem;
+  }
+
+  #restaurant-address {
+    text-align: center;
+    margin-bottom: 23px;
+  }
 }
