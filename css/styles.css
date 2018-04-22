@@ -403,3 +403,16 @@ nav h1 a {
     margin-bottom: 23px;
   }
 }
+
+@media (max-width: 600px) {
+  table#restaurant-hours {
+    width: 100%;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 450px) {
+  #logo {
+    font-size: 0.9rem;
+  }
+}
