@@ -1,6 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
+html, body {
+  overflow-x: hidden;
+}
+
 body,
 td,
 th,
@@ -422,6 +426,11 @@ nav h1 a {
   table#restaurant-hours {
     width: 100%;
     padding: 20px;
+  }
+
+  
+  #restaurants-list li {
+    width: 70%;
   }
 }
 
