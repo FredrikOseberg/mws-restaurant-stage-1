@@ -11,8 +11,7 @@ self.addEventListener('install', event => {
     '/js/restaurant_info.js',
     '/restaurant.html',
     '/css/styles.css',
-    '/data/restaurants.json',
-    'https://maps.googleapis.com/maps/api/js?key=AIzaSyADpmeCuLo0Bkmp3G2ijKBvO3kmiLuljj4&libraries=places&callback=initMap'
+    '/data/restaurants.json'
   ];
 
   event.waitUntil(
