@@ -151,7 +151,7 @@ createRestaurantHTML = restaurant => {
   const container = document.createElement('div');
   container.className = 'restaurant-list-container';
 
-  const name = document.createElement('h1');
+  const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
   container.append(name);
 
@@ -165,7 +165,7 @@ createRestaurantHTML = restaurant => {
 
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
-  more.setAttribute('aria-role', 'button');
+  more.setAttribute('role', 'button');
   more.href = DBHelper.urlForRestaurant(restaurant);
   container.append(more);
 
@@ -202,7 +202,6 @@ handleUpdateNotificationClick = worker => {
  */
 
 updateNotify = worker => {
-  console.log('running updateNotify');
   const button = document.createElement('button');
   button.textContent = 'There is a new version available. Click here to refresh';
   button.className = 'version-button';
