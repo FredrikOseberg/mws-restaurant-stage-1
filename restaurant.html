@@ -21,13 +21,11 @@
       </h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <nav aria-label="breadcrumb">
-      <ul id="breadcrumb">
-        <li>
-          <a href="/">Home</a>
-        </li>
-      </ul>
-    </nav>
+    <ul id="breadcrumb" aria-label="breadcrumb" tabindex="1">
+      <li>
+        <a href="/">Home</a>
+      </li>
+    </ul>
     <!-- End breadcrumb -->
     <!-- End nav -->
   </header>
@@ -37,7 +35,7 @@
   <main id="maincontent">
     <!-- Beginning map -->
     <section id="map-container">
-      <div id="map" tabindex="0" role="application" aria-label="map"></div>
+      <div id="map" tabindex="-1" role="application" aria-label="map"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->

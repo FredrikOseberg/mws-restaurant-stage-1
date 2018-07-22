@@ -234,7 +234,6 @@ initServiceWorker = () => {
     navigator.serviceWorker
       .register('/sw.js')
       .then(reg => {
-        console.log('registered', reg);
         if (!navigator.serviceWorker.controller) return;
 
         if (reg.waiting) {
