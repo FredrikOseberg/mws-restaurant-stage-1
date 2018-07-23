@@ -163,6 +163,8 @@ nav h1 a {
 }
 .filter-label {
   color: #fff;
+  display: block;
+  margin: 15px 0 0px 10px;
 }
 .filter-options h2 {
   color: white;
