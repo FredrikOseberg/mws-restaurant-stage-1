@@ -161,6 +161,9 @@ nav h1 a {
   align-items: center;
   padding: 15px;
 }
+.filter-label {
+  color: #fff;
+}
 .filter-options h2 {
   color: white;
   font-size: 1rem;
