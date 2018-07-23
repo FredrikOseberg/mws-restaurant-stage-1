@@ -81,6 +81,8 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
+
+  document.querySelector;
   updateRestaurants();
 };
 
@@ -138,12 +140,13 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
  * Create restaurant HTML.
  */
 createRestaurantHTML = restaurant => {
+  if (restaurant.name === 'Casa Enrique') restaurant.photograph = 10;
   const li = document.createElement('li');
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
-  image.srcset = restaurant.srcset;
-  image.sizes = restaurant.sizes;
+  image.srcset = DBHelper.srcsetForRestaurantImage(restaurant);
+  image.sizes = DBHelper.imageSizesForRestaurant();
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.alt = restaurant.name;
   li.append(image);
@@ -232,12 +235,12 @@ trackInstalling = worker => {
 initServiceWorker = () => {
   if (navigator.serviceWorker) {
     navigator.serviceWorker
-      .register('/sw.js')
+      .register('/packedSw.js')
       .then(reg => {
         if (!navigator.serviceWorker.controller) return;
 
         if (reg.waiting) {
-          updateNotify(req.waiting);
+          updateNotify(reg.waiting);
           return;
         }
 
