@@ -74,7 +74,6 @@ self.addEventListener('fetch', event => {
           }
         })
         .then(response => {
-          console.log(response, 'response');
           return new Response(JSON.stringify(response));
         })
     );
