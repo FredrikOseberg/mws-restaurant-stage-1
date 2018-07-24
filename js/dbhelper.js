@@ -1,7 +1,7 @@
 /**
  * Common database helper functions.
  */
-class DBHelper {
+export default class DBHelper {
   /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
@@ -20,7 +20,9 @@ class DBHelper {
       .then(restaurants => {
         callback(null, restaurants);
       })
-      .catch(err => callback(err, null));
+      .catch(err => {
+        callback(err, null);
+      });
   }
 
   /**
