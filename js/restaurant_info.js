@@ -100,6 +100,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  */
 const fillReviewsHTML = reviews => {
   const container = document.getElementById('reviews-container');
+  container.innerHTML = null;
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
   container.appendChild(title);
@@ -110,7 +111,8 @@ const fillReviewsHTML = reviews => {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
+  const ul = document.createElement('ul');
+  ul.id = 'reviews-list';
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
@@ -220,12 +222,15 @@ const getParameterByName = (name, url) => {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
-const getReviews = () => {
-  const id = window.location.href
+const getRestaurantId = () =>
+  window.location.href
     .split('?')
     .pop()
     .split('=')
     .pop();
+
+const getReviews = () => {
+  const id = getRestaurantId();
 
   DBHelper.fetchReviewsById(id, (error, reviews) => {
     if (reviews) {
@@ -236,6 +241,30 @@ const getReviews = () => {
   });
 };
 
+const handleSubmit = e => {
+  e.preventDefault();
+  const restaurant_id = getRestaurantId();
+  const name = document.getElementById('name').value;
+  const rating = document.getElementById('rating').value;
+  const comments = document.getElementById('comments').value;
+
+  console.log(name, rating, comments, restaurant_id);
+
+  const review = {
+    name,
+    rating,
+    comments,
+    restaurant_id
+  };
+
+  DBHelper.createReview(review, () => getReviews());
+};
+
+const setupEventListeners = () => {
+  document.addEventListener('submit', handleSubmit);
+};
+
 document.addEventListener('DOMContentLoaded', event => {
   getReviews();
+  setupEventListeners();
 });

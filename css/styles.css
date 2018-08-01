@@ -153,7 +153,8 @@
   margin: 0;
   font-size: 11pt;
 }
-#restaurants-list li a {
+#restaurants-list li a,
+.reviews-form-submit-button {
   background-color: orange;
   border-bottom: 3px solid #eee;
   color: #fff;
@@ -225,7 +226,8 @@
 #reviews-container {
   padding: 30px 40px 80px;
 }
-#reviews-container h2 {
+#reviews-container h2,
+#reviews-form h3 {
   color: #f58500;
   font-size: 24pt;
   font-weight: 300;
@@ -283,6 +285,41 @@
 #reviews-list .reviews-star {
   color: gold;
   margin: 0 1px;
+}
+#reviews-form-container {
+  padding: 20px 40px 30px;
+  width: 45%;
+}
+#reviews-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  max-width: 500px;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.form-group label {
+  margin-bottom: 3px;
+  color: #585858;
+  font-size: 0.9rem;
+  font-weight:bold;
+}
+.review-form-input,
+#comments {
+  border-radius: 3px;
+  padding: 8px;
+  height: 25px;
+  font-size: 0.8rem;
+  border: none;
+  background-color: #fff;
+}
+#comments {
+  height: 100px;
 }
 #restaurant-hours td {
   color: #666;
@@ -343,6 +380,16 @@
   #restaurant-address {
     text-align: center;
     margin-bottom: 23px;
+  }
+
+  #reviews-form-container {
+    display: flex;
+    justify-content: center;
+    width: auto;
+  }
+
+  #reviews-form h3 {
+    text-align: center;
   }
 }
 

@@ -145,7 +145,28 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
     <section id="reviews-container">
-      <ul id="reviews-list"></ul>
+    </section>
+    <section id="reviews-form-container">
+      <form id="reviews-form">
+        <h3>Leave a Review</h3>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" class="review-form-input" placeholder="Enter your real name">
+        </div>
+
+        <div class="form-group">
+          <label for="rating">Rating</label>
+          <input type="number" id="rating" name="rating" class="review-form-input" placeholder="Enter a number between 1 and 5">
+        </div>
+
+        <div class="form-group">
+          <label for="comments">Comment</label>
+          <textarea id="comments" name="comments" placeholder="Enter your comment about this restaurant"></textarea>
+        </div>
+
+        <button class="reviews-form-submit-button">Submit Review</button>
+      </form>
     </section>
     <!-- End reviews -->
   </main>

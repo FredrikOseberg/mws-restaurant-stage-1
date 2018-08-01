@@ -29,8 +29,8 @@ export default class DBHelper {
   /**
    * Fetch all reviews.
    */
-  static fetchReviews(callback) {
-    const fetchUrl = `${DBHelper.DATABASE_URL}reviews`;
+  static fetchReviewsById(id, callback) {
+    const fetchUrl = `${DBHelper.DATABASE_URL}reviews/?restaurant_id=${id}`;
     fetch(fetchUrl)
       .then(data => data.json())
       .then(reviews => {
@@ -39,24 +39,6 @@ export default class DBHelper {
       .catch(err => {
         callback(err, null);
       });
-  }
-
-  /**
-   *
-   */
-  static fetchReviewsById(id, callback) {
-    DBHelper.fetchReviews((err, reviews) => {
-      if (err) {
-        callback(err, null);
-      } else {
-        const filteredReviews = reviews.filter(r => r.restaurant_id == id);
-        if (filteredReviews.length > 0) {
-          callback(null, filteredReviews);
-        } else {
-          callback('No review by that id in the database', null);
-        }
-      }
-    });
   }
 
   /**
@@ -212,5 +194,24 @@ export default class DBHelper {
       animation: google.maps.Animation.DROP
     });
     return marker;
+  }
+
+  /**
+   * Create a review
+   */
+  static createReview(review, callback) {
+    console.log('firing', review);
+    const urlToPost = `${DBHelper.DATABASE_URL}reviews`;
+    fetch(urlToPost, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      referrer: 'no-referrer',
+      body: JSON.stringify(review)
+    })
+      .then(response => callback())
+      .catch(error => console.log(error));
   }
 }
