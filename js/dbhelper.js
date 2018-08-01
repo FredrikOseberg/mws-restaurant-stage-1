@@ -8,14 +8,15 @@ export default class DBHelper {
    */
   static get DATABASE_URL() {
     const port = 1337; // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}/`;
   }
 
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(DBHelper.DATABASE_URL)
+    const fetchUrl = `${DBHelper.DATABASE_URL}restaurants`;
+    fetch(fetchUrl)
       .then(data => data.json())
       .then(restaurants => {
         callback(null, restaurants);
@@ -23,6 +24,39 @@ export default class DBHelper {
       .catch(err => {
         callback(err, null);
       });
+  }
+
+  /**
+   * Fetch all reviews.
+   */
+  static fetchReviews(callback) {
+    const fetchUrl = `${DBHelper.DATABASE_URL}reviews`;
+    fetch(fetchUrl)
+      .then(data => data.json())
+      .then(reviews => {
+        callback(null, reviews);
+      })
+      .catch(err => {
+        callback(err, null);
+      });
+  }
+
+  /**
+   *
+   */
+  static fetchReviewsById(id, callback) {
+    DBHelper.fetchReviews((err, reviews) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        const filteredReviews = reviews.filter(r => r.restaurant_id == id);
+        if (filteredReviews.length > 0) {
+          callback(null, filteredReviews);
+        } else {
+          callback('No review by that id in the database', null);
+        }
+      }
+    });
   }
 
   /**

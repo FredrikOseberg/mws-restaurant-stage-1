@@ -73,8 +73,6 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML();
   }
-  // fill reviews
-  fillReviewsHTML();
 };
 
 /**
@@ -100,7 +98,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
 /**
  * Create all reviews HTML and add them to the webpage.
  */
-const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+const fillReviewsHTML = reviews => {
   const container = document.getElementById('reviews-container');
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
@@ -137,6 +135,34 @@ const createStarRatingHTML = stars => {
 };
 
 /**
+ * Format date
+ */
+const formatDate = unixDate => {
+  const date = new Date(unixDate);
+
+  const months = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+
+  const year = date.getFullYear();
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+
+  return `${month} ${day}, ${year}`;
+};
+
+/**
  * Create review HTML and add it to the webpage.
  */
 const createReviewHTML = review => {
@@ -156,7 +182,8 @@ const createReviewHTML = review => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  console.log(review.updatedAt, review);
+  date.innerHTML = formatDate(review.updatedAt);
   date.className = 'review-date';
   li.appendChild(date);
 
@@ -192,3 +219,23 @@ const getParameterByName = (name, url) => {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+
+const getReviews = () => {
+  const id = window.location.href
+    .split('?')
+    .pop()
+    .split('=')
+    .pop();
+
+  DBHelper.fetchReviewsById(id, (error, reviews) => {
+    if (reviews) {
+      fillReviewsHTML(reviews);
+    } else if (error) {
+      console.log(error);
+    }
+  });
+};
+
+document.addEventListener('DOMContentLoaded', event => {
+  getReviews();
+});
