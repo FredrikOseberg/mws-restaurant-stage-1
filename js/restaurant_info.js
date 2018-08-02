@@ -1,7 +1,9 @@
 import DBHelper from './dbhelper';
+import { addSavedReviews } from './helpers';
 import '../css/styles.css';
 
 let restaurant;
+let reviewsArray = [];
 var map;
 
 /**
@@ -228,16 +230,43 @@ const getRestaurantId = () =>
     .split('=')
     .pop();
 
-const getReviews = () => {
+const getReviews = (offline = false) => {
   const id = getRestaurantId();
+  console.log('running');
+  if (offline) {
+    return fillReviewsHTML(reviewsArray);
+  }
 
   DBHelper.fetchReviewsById(id, (error, reviews) => {
     if (reviews) {
-      fillReviewsHTML(reviews);
+      reviewsArray = reviewsArray.concat(reviews);
+      fillReviewsHTML(reviewsArray);
     } else if (error) {
       console.log(error);
     }
   });
+};
+
+const flashMessage = message => {
+  console.log('flashing');
+  const container = document.createElement('div');
+  container.className = 'flash-message';
+
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-exclamation-triangle';
+
+  const paragraph = document.createElement('p');
+  paragraph.textContent = message;
+
+  container.appendChild(icon);
+  container.appendChild(paragraph);
+
+  const body = document.querySelector('.inside');
+
+  body.appendChild(container);
+  setTimeout(() => {
+    body.removeChild(container);
+  }, 3000);
 };
 
 const handleSubmit = e => {
@@ -254,14 +283,37 @@ const handleSubmit = e => {
     restaurant_id
   };
 
-  DBHelper.createReview(review, () => getReviews());
+  if (navigator.onLine) {
+    DBHelper.createReview(review, () => getReviews());
+  } else {
+    review.updatedAt = Date.now();
+    reviewsArray.push(review);
+    getReviews(true);
+
+    delete review.updatedAt;
+
+    const savedReviews = JSON.parse(localStorage.getItem('savedReviews'));
+
+    if (savedReviews && savedReviews.length > 0) {
+      savedReviews.push(review);
+      localStorage.setItem('savedReviews', JSON.stringify(savedReviews));
+    } else {
+      localStorage.setItem('savedReviews', JSON.stringify([review]));
+    }
+
+    flashMessage('You are currently offline. Your comment will be updated on the server once you go back online.');
+  }
 };
+
+const handleOnline = () => addSavedReviews(getReviews);
 
 const setupEventListeners = () => {
   document.addEventListener('submit', handleSubmit);
+  window.addEventListener('online', handleOnline);
 };
 
 document.addEventListener('DOMContentLoaded', event => {
   getReviews();
   setupEventListeners();
+  addSavedReviews(getReviews);
 });

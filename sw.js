@@ -30,15 +30,15 @@ const dbPromise = idb.open('mws-restaurant-2', 1, upgradeDB => {
   }
 });
 
-const putRequestToDb = requests => {
+const putRequestsToDb = request => {
+  console.log(request.body);
+  const clonedRequest = request.clone();
   return dbPromise.then(db => {
     const tx = db.transaction('requests', 'readwrite');
-    tx.objectStore('requests').put(requests, numberOfRequests);
+    tx.objectStore('requests').put(clonedRequest, numberOfRequests);
     numberOfRequests += 1;
-    return tx.complete;
+    return request;
   });
-
-  return request;
 };
 
 const putRestaurantsToDb = restaurants => {
@@ -66,15 +66,12 @@ const handleFetch = (request, store, getId, callback) =>
       .transaction(store)
       .objectStore(store)
       .get(getId)
-      .then(data => {
-        if (data && data.length > 0) {
-          return data;
-        } else {
-          return fetch(request)
-            .then(data => data.json())
-            .then(json => callback(json, request));
-        }
-      })
+      .then(data =>
+        fetch(request)
+          .then(reqData => reqData.json())
+          .then(json => callback(json, request))
+          .catch(() => data)
+      )
       .then(response => {
         console.log('response', response);
         return new Response(JSON.stringify(response));
@@ -83,19 +80,20 @@ const handleFetch = (request, store, getId, callback) =>
 
 const handleReviewsFetch = request => {
   const id = request.url.split('=').pop();
-  console.log(id);
   return handleFetch(request, 'reviews', id, putReviewsToDb);
 };
 
 const handleRestaurantFetch = request => handleFetch(request, 'restaurants', 'restaurants', putRestaurantsToDb);
 
 const handleReviewPost = request => {
-  console.log('running handlereview');
+  console.log(request);
   return fetch(request)
-    .then(() => console.log('fetching'))
+    .then(response => {
+      return response;
+    })
     .catch(() => {
       console.log('failed fetch');
-      putRequestToDb(request);
+      putRequestsToDb(request);
       // Post message from service worker to handle ui update
     });
 };
@@ -108,7 +106,6 @@ self.addEventListener('install', event => {
     '/dist/main.js',
     '/dist/restaurant_info.js',
     '/restaurant.html',
-    '/img/1-320w.jpg',
     '/css/styles.css'
   ].concat(imageUrls);
 
@@ -136,17 +133,13 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
-  // console.log('fetch', request);
   if (request.url.includes(RESTAURANT_URL)) {
     event.respondWith(handleRestaurantFetch(request));
   } else if (request.url.includes(REVIEWS_POST_URL)) {
     if (request.method === 'POST') {
-      event.respondWith(handleReviewPost(request));
+      // event.respondWith(handleReviewPost(request));
     } else if (request.method === 'GET') {
-      console.log('Getting reviews');
       event.respondWith(handleReviewsFetch(request));
-      // Save responses
-      // Serve from idb if there are responses
       // Fallback to network
     }
   } else {

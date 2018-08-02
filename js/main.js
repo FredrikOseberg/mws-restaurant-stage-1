@@ -1,4 +1,5 @@
 import DBHelper from './dbhelper';
+import { addSavedReviews } from './helpers';
 import '../css/styles.css';
 
 let restaurants, neighborhoods, cuisines;
@@ -252,9 +253,12 @@ const initServiceWorker = () => {
   }
 };
 
+const handleOnline = () => addSavedReviews();
+
 const setupEventListeners = () => {
   document.querySelector('#neighborhoods-select').addEventListener('change', updateRestaurants);
   document.querySelector('#cuisines-select').addEventListener('change', updateRestaurants);
+  window.addEventListener('online', handleOnline);
 };
 
 /**
@@ -265,4 +269,5 @@ document.addEventListener('DOMContentLoaded', event => {
   fetchCuisines();
   initServiceWorker();
   setupEventListeners();
+  addSavedReviews();
 });
