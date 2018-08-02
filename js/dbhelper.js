@@ -200,7 +200,6 @@ export default class DBHelper {
    * Create a review
    */
   static createReview(review, callback) {
-    console.log('firing', review);
     const urlToPost = `${DBHelper.DATABASE_URL}reviews`;
     fetch(urlToPost, {
       method: 'POST',

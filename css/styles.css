@@ -321,6 +321,11 @@
 #comments {
   height: 100px;
 }
+.reviews-form-submit-button {
+  border-radius: 3px;
+  cursor: pointer;
+  height: 50px;
+}
 #restaurant-hours td {
   color: #666;
 }

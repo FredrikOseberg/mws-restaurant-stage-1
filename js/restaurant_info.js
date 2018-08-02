@@ -184,7 +184,6 @@ const createReviewHTML = review => {
   li.appendChild(name);
 
   const date = document.createElement('p');
-  console.log(review.updatedAt, review);
   date.innerHTML = formatDate(review.updatedAt);
   date.className = 'review-date';
   li.appendChild(date);
@@ -247,8 +246,6 @@ const handleSubmit = e => {
   const name = document.getElementById('name').value;
   const rating = document.getElementById('rating').value;
   const comments = document.getElementById('comments').value;
-
-  console.log(name, rating, comments, restaurant_id);
 
   const review = {
     name,
