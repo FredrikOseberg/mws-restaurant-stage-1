@@ -9,7 +9,7 @@ var map;
 /**
  * Initialize Google map, called from HTML.
  */
-window.initMap = () => {
+const initMap = () => {
   fetchRestaurantFromURL((error, restaurant) => {
     if (error) {
       // Got an error!
@@ -20,7 +20,6 @@ window.initMap = () => {
         center: restaurant.latlng,
         scrollwheel: false
       });
-      fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
   });
@@ -292,11 +291,13 @@ const handleOnline = () => addSavedReviews(getReviews);
 
 const setupEventListeners = () => {
   document.addEventListener('submit', handleSubmit);
+  document.querySelector('#show-map').addEventListener('click', initMap);
   window.addEventListener('online', handleOnline);
 };
 
 document.addEventListener('DOMContentLoaded', event => {
   getReviews();
   setupEventListeners();
+  fetchRestaurantFromURL(() => fillBreadcrumb());
   addSavedReviews(getReviews);
 });

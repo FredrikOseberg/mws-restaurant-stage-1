@@ -231,6 +231,9 @@
   width: 50%;
 }
 .inside #map {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100%;
 }
