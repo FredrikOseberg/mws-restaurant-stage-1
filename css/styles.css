@@ -70,33 +70,53 @@
 }
 /* ====================== Map ====================== */
 #map {
-  height: 400px;
+  max-height:600px;
+  height: 600px;
+  background-image: linear-gradient(to right, #262831, #4e64fd);
   width: 100%;
-  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+  color: #fff;
+}
+#map h1 {
+  font-size: 2rem;
+  margin-bottom: 150px;
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
-  background-color: #3397db;
+  background-color: #fff;
+  display: flex;
   align-items: center;
-  padding: 15px;
+  flex-direction: column;
+  color: #585858;
+  padding: 40px 20px;
+}
+.filter-container {
+  display: flex;
+  justify-content: center;
 }
 .filter-label {
-  color: #fff;
+  color: #585858;
+  font-size: 1rem;
+  font-weight: bold;
   display: block;
   margin: 15px 0 0px 10px;
 }
 .filter-options h2 {
-  color: white;
-  font-size: 1rem;
-  font-weight: normal;
+  color: #585858;
+  font-size: 1.5rem;
+  font-weight: bold;
   line-height: 1;
-  margin: 0 20px;
+  margin: 0 20px 40px 0;
 }
 .filter-options select {
-  background-color: white;
+  background-color: #cecccc;
   border: 1px solid #fff;
   font-family: Arial, sans-serif;
   font-size: 11pt;
+  color: #585858;
   height: 35px;
   letter-spacing: 0;
   margin: 10px;
@@ -168,7 +188,7 @@
   text-transform: uppercase;
 }
 
-#restaurant-favorite-button {
+.restaurant-favorite-button {
   position: absolute;
   right: 5px;
   top: -12px;
@@ -178,13 +198,22 @@
   border: none;
   cursor: pointer;
 }
-.unfavorited {
-  color: #585858;
-  font-size: 1.5rem;
+.heartIcon {
+  width: 28px;
 }
-.favorited {
-  font-size: 1.5rem;
-  color: rgb(255, 116, 116);
+.map-placeholder-icon {
+  width: 70px;
+  margin-bottom: 35px;
+}
+#show-map {
+  border: none;
+  padding: 10px;
+  height: 49px;
+  width: 200px;
+  color: #585858;
+  border-radius: 3px;
+  font-size: 1rem;
+  background-color: #fff;
 }
 /* ====================== Restaurant Details ====================== */
 .inside header {
@@ -194,7 +223,7 @@
   z-index: 1000;
 }
 .inside #map-container {
-  background: blue none repeat scroll 0 0;
+  background: transparent none repeat scroll 0 0;
   height: 80%;
   right: 0;
   position: fixed;
@@ -202,7 +231,6 @@
   width: 50%;
 }
 .inside #map {
-  background-color: #ccc;
   height: 100%;
   width: 100%;
 }
@@ -353,11 +381,12 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 50px;
+  min-height: 50px;
   background-color: rgb(82, 216, 82);
   color: #fff;
   display: flex;
   align-items: center;
+  box-sizing: border-box;
   z-index: 9999;
   padding: 15px 30px;
   font-size: 1.2rem;
@@ -367,6 +396,10 @@
   margin-left: 10px;
   color: #fff;
   font-size: 1rem;
+}
+.flash-message img {
+  width: 30px;
+  margin-right: 12px;
 }
 
 @media (max-width: 1200px) {
@@ -441,6 +474,18 @@
   table#restaurant-hours {
     width: 100%;
     padding: 20px;
+  }
+
+  #map h1 {
+    font-size: 1.5rem;
+  }
+
+  .filter-container {
+    flex-direction: column;
+  }
+
+  .flash-message p {
+    font-size: 0.9rem;
   }
 
   

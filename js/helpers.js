@@ -15,13 +15,14 @@ export const flashMessage = message => {
   const container = document.createElement('div');
   container.className = 'flash-message';
 
-  const icon = document.createElement('i');
-  icon.className = 'fas fa-exclamation-triangle';
+  const warningImage = document.createElement('img');
+  warningImage.src = '../img/exclamation-triangle.svg';
+  warningImage.alt = 'exclamation mark';
 
   const paragraph = document.createElement('p');
   paragraph.textContent = message;
 
-  container.appendChild(icon);
+  container.appendChild(warningImage);
   container.appendChild(paragraph);
 
   const body = document.getElementsByTagName('body')[0];

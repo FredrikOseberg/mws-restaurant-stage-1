@@ -76,9 +76,13 @@ self.addEventListener('install', event => {
   const urlsToCache = [
     '/',
     '/js/dbhelper.js',
-    '/js/fontawesome-all.min.js',
     '/dist/main.js',
     '/dist/restaurant_info.js',
+    '/img/exclamation-triangle.svg',
+    '/img/heart.svg',
+    '/img/heartSolid.svg',
+    '/img/map-marked-alt.svg',
+    '/img/user.svg',
     '/restaurant.html',
     '/css/styles.css'
   ].concat(imageUrls);
@@ -107,6 +111,7 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
+  console.log('hi');
   if (request.url.includes(RESTAURANT_URL)) {
     event.respondWith(handleRestaurantFetch(request));
   } else if (request.url.includes(REVIEWS_POST_URL)) {

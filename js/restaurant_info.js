@@ -1,5 +1,5 @@
 import DBHelper from './dbhelper';
-import { addSavedReview, flashMessage } from './helpers';
+import { addSavedReviews, flashMessage } from './helpers';
 import '../css/styles.css';
 
 let restaurant;
@@ -101,7 +101,6 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = reviews => {
-  console.log(reviews);
   const container = document.getElementById('reviews-container');
   container.innerHTML = null;
   const title = document.createElement('h2');
@@ -172,8 +171,9 @@ const formatDate = unixDate => {
  */
 const createReviewHTML = review => {
   const li = document.createElement('li');
-  const personIcon = document.createElement('i');
-  personIcon.className = 'fas fa-user';
+  const personIcon = document.createElement('img');
+  personIcon.alt = 'User';
+  personIcon.src = '../img/user.svg';
 
   const personIconContainer = document.createElement('div');
   personIconContainer.className = 'review-person-icon';

@@ -4,6 +4,7 @@ import '../css/styles.css';
 
 let restaurants, neighborhoods, cuisines;
 let firstLoad = true;
+let displayMap = false;
 var map;
 var markers = [];
 
@@ -67,7 +68,8 @@ const fillCuisinesHTML = (cuisines = self.cuisines) => {
 /**
  * Initialize Google map, called from HTML.
  */
-window.initMap = () => {
+
+const initMap = () => {
   let loc = {
     lat: 40.722216,
     lng: -73.987501
@@ -77,8 +79,7 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
-
-  document.querySelector;
+  displayMap = true;
   updateRestaurants();
 };
 
@@ -130,7 +131,9 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
     ul.append(createRestaurantHTML(restaurant));
   });
   initLazyLoad();
-  addMarkersToMap();
+  if (displayMap) {
+    addMarkersToMap();
+  }
 };
 
 /**
@@ -140,14 +143,18 @@ const updateHeart = restaurant => {
   const favoriteButtons = Array.from(document.getElementsByClassName('fav-button-group'));
   const favoriteButton = favoriteButtons[Number(restaurant.id) - 1];
   const favoriteButtonHeart = favoriteButton.firstChild;
+  favoriteButton.setAttribute('aria-label', 'FavoriteButton');
   favoriteButton.innerHTML = '';
 
-  const heart = document.createElement('i');
-  heart.id = 'heartIcon';
+  const heart = document.createElement('img');
+  heart.alt = 'heart';
+
   if (favoriteButtonHeart.classList.contains('favorited')) {
-    heart.className = 'far fa-heart unfavorited';
+    heart.src = '../img/heart.svg';
+    heart.className = 'heartIcon unfavorited';
   } else {
-    heart.className = 'fas fa-heart favorited';
+    heart.src = '../img/heartSolid.svg';
+    heart.className = 'heartIcon favorited';
   }
 
   favoriteButton.appendChild(heart);
@@ -174,7 +181,6 @@ const handleFavoriteButtonClick = restaurant => {
       } else {
         savedRestaurants.push(restaurant);
       }
-      console.log(savedRestaurants);
       localStorage.setItem('savedRestaurants', JSON.stringify(savedRestaurants));
     } else {
       localStorage.setItem('savedRestaurants', JSON.stringify([restaurant]));
@@ -193,15 +199,16 @@ const createRestaurantHTML = restaurant => {
   const li = document.createElement('li');
 
   const favoriteButton = document.createElement('button');
-  favoriteButton.id = 'restaurant-favorite-button';
-  favoriteButton.className = 'fav-button-group';
+  favoriteButton.className = 'restaurant-favorite-button fav-button-group';
 
-  const heart = document.createElement('i');
-  heart.id = 'heartIcon';
+  const heart = document.createElement('img');
+  heart.alt = 'heart';
   if (restaurant.is_favorite === 'true') {
-    heart.className = 'fas fa-heart favorited';
+    heart.src = '../img/heartSolid.svg';
+    heart.className = 'heartIcon favorited';
   } else {
-    heart.className = 'far fa-heart unfavorited';
+    heart.src = '../img/heart.svg';
+    heart.className = 'heartIcon unfavorited';
   }
 
   favoriteButton.appendChild(heart);
@@ -352,6 +359,7 @@ const handleOnline = () => {
 const setupEventListeners = () => {
   document.querySelector('#neighborhoods-select').addEventListener('change', updateRestaurants);
   document.querySelector('#cuisines-select').addEventListener('change', updateRestaurants);
+  document.querySelector('#show-map').addEventListener('click', initMap);
   window.addEventListener('online', handleOnline);
 };
 
@@ -387,5 +395,6 @@ document.addEventListener('DOMContentLoaded', event => {
   fetchCuisines();
   initServiceWorker();
   setupEventListeners();
+  updateRestaurants();
   addSavedReviews();
 });
