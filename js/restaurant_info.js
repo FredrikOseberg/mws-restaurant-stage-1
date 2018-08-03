@@ -101,6 +101,7 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = reviews => {
+  console.log(reviews);
   const container = document.getElementById('reviews-container');
   container.innerHTML = null;
   const title = document.createElement('h2');
@@ -232,14 +233,16 @@ const getRestaurantId = () =>
 
 const getReviews = (offline = false) => {
   const id = getRestaurantId();
-  console.log('running');
+
   if (offline) {
     return fillReviewsHTML(reviewsArray);
   }
 
   DBHelper.fetchReviewsById(id, (error, reviews) => {
     if (reviews) {
-      reviewsArray = reviewsArray.concat(reviews);
+      const filteredReviews = reviews.filter(review => !reviewsArray.find(rev => rev.id === review.id));
+
+      reviewsArray = reviewsArray.filter(review => review.createdAt).concat(filteredReviews);
       fillReviewsHTML(reviewsArray);
     } else if (error) {
       console.log(error);
@@ -248,7 +251,6 @@ const getReviews = (offline = false) => {
 };
 
 const flashMessage = message => {
-  console.log('flashing');
   const container = document.createElement('div');
   container.className = 'flash-message';
 
@@ -303,6 +305,8 @@ const handleSubmit = e => {
 
     flashMessage('You are currently offline. Your comment will be updated on the server once you go back online.');
   }
+
+  [name, rating, value].forEach(node => (node.value = null));
 };
 
 const handleOnline = () => addSavedReviews(getReviews);

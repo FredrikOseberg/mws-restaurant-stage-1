@@ -73,7 +73,6 @@ const handleFetch = (request, store, getId, callback) =>
           .catch(() => data)
       )
       .then(response => {
-        console.log('response', response);
         return new Response(JSON.stringify(response));
       })
   );
@@ -92,7 +91,6 @@ const handleReviewPost = request => {
       return response;
     })
     .catch(() => {
-      console.log('failed fetch');
       putRequestsToDb(request);
       // Post message from service worker to handle ui update
     });
@@ -136,11 +134,8 @@ self.addEventListener('fetch', event => {
   if (request.url.includes(RESTAURANT_URL)) {
     event.respondWith(handleRestaurantFetch(request));
   } else if (request.url.includes(REVIEWS_POST_URL)) {
-    if (request.method === 'POST') {
-      // event.respondWith(handleReviewPost(request));
-    } else if (request.method === 'GET') {
+    if (request.method === 'GET') {
       event.respondWith(handleReviewsFetch(request));
-      // Fallback to network
     }
   } else {
     event.respondWith(
