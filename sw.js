@@ -92,7 +92,6 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-  console.log('sopp');
   event.waitUntil(
     caches
       .keys()

@@ -1,5 +1,6 @@
 const path = require('path');
 const OptimizeJsPlugin = require('optimize-js-plugin');
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
 
 module.exports = {
   entry: {
@@ -22,6 +23,9 @@ module.exports = {
   plugins: [
     new OptimizeJsPlugin({
       sourceMap: false
+    }),
+    new ImageminPlugin({
+      test: /.(jpe?g|png|gif|svg)$/i
     })
   ]
 };

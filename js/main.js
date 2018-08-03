@@ -3,6 +3,7 @@ import { addSavedReviews, flashMessage } from './helpers';
 import '../css/styles.css';
 
 let restaurants, neighborhoods, cuisines;
+let firstLoad = true;
 var map;
 var markers = [];
 
@@ -128,6 +129,7 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
   });
+  initLazyLoad();
   addMarkersToMap();
 };
 
@@ -206,10 +208,18 @@ const createRestaurantHTML = restaurant => {
   favoriteButton.addEventListener('click', () => handleFavoriteButtonClick(restaurant));
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.srcset = DBHelper.srcsetForRestaurantImage(restaurant);
-  image.sizes = DBHelper.imageSizesForRestaurant();
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.dataset.sizes = DBHelper.imageSizesForRestaurant();
+
+  if (firstLoad) {
+    image.src = '../img/placeholder.png';
+    image.dataset.srcset = DBHelper.srcsetForRestaurantImage(restaurant);
+    image.dataset.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.className = 'restaurant-img lazy-img';
+  } else {
+    image.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.srcset = DBHelper.srcsetForRestaurantImage(restaurant);
+    image.className = 'restaurant-img';
+  }
   image.alt = restaurant.name;
   li.append(image);
 
@@ -236,7 +246,6 @@ const createRestaurantHTML = restaurant => {
   container.append(more);
 
   li.append(container);
-
   return li;
 };
 
@@ -344,6 +353,30 @@ const setupEventListeners = () => {
   document.querySelector('#neighborhoods-select').addEventListener('change', updateRestaurants);
   document.querySelector('#cuisines-select').addEventListener('change', updateRestaurants);
   window.addEventListener('online', handleOnline);
+};
+
+const initLazyLoad = () => {
+  var imagesToLoad = [].slice.call(document.querySelectorAll('.lazy-img'));
+
+  if ('IntersectionObserver' in window) {
+    let imageObserver = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          let lazyImage = entry.target;
+          lazyImage.src = lazyImage.dataset.src;
+          lazyImage.srcset = lazyImage.dataset.srcset;
+          lazyImage.classList.remove('lazy-img');
+          imageObserver.unobserve(lazyImage);
+        }
+      });
+    });
+
+    imagesToLoad.forEach(function(lazyImage) {
+      imageObserver.observe(lazyImage);
+    });
+
+    firstLoad = false;
+  }
 };
 
 /**
