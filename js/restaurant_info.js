@@ -1,5 +1,5 @@
 import DBHelper from './dbhelper';
-import { addSavedReviews } from './helpers';
+import { addSavedReview, flashMessage } from './helpers';
 import '../css/styles.css';
 
 let restaurant;
@@ -248,27 +248,6 @@ const getReviews = (offline = false) => {
       console.log(error);
     }
   });
-};
-
-const flashMessage = message => {
-  const container = document.createElement('div');
-  container.className = 'flash-message';
-
-  const icon = document.createElement('i');
-  icon.className = 'fas fa-exclamation-triangle';
-
-  const paragraph = document.createElement('p');
-  paragraph.textContent = message;
-
-  container.appendChild(icon);
-  container.appendChild(paragraph);
-
-  const body = document.querySelector('.inside');
-
-  body.appendChild(container);
-  setTimeout(() => {
-    body.removeChild(container);
-  }, 3000);
 };
 
 const handleSubmit = e => {

@@ -6,7 +6,6 @@ let numberOfRequests = 1;
 const staticCacheName = `restaurants-cache-v${generateId()}`;
 const RESTAURANT_URL = 'http://localhost:1337/restaurants';
 const REVIEWS_POST_URL = 'http://localhost:1337/reviews';
-const REVIEWS_GET_URL = 'http://localhost:1337/reviews/?restaurant_id';
 
 const imageUrls = (function() {
   const urls = [];
@@ -29,17 +28,6 @@ const dbPromise = idb.open('mws-restaurant-2', 1, upgradeDB => {
       upgradeDB.createObjectStore('requests');
   }
 });
-
-const putRequestsToDb = request => {
-  console.log(request.body);
-  const clonedRequest = request.clone();
-  return dbPromise.then(db => {
-    const tx = db.transaction('requests', 'readwrite');
-    tx.objectStore('requests').put(clonedRequest, numberOfRequests);
-    numberOfRequests += 1;
-    return request;
-  });
-};
 
 const putRestaurantsToDb = restaurants => {
   return dbPromise.then(db => {
@@ -84,18 +72,6 @@ const handleReviewsFetch = request => {
 
 const handleRestaurantFetch = request => handleFetch(request, 'restaurants', 'restaurants', putRestaurantsToDb);
 
-const handleReviewPost = request => {
-  console.log(request);
-  return fetch(request)
-    .then(response => {
-      return response;
-    })
-    .catch(() => {
-      putRequestsToDb(request);
-      // Post message from service worker to handle ui update
-    });
-};
-
 self.addEventListener('install', event => {
   const urlsToCache = [
     '/',
@@ -116,6 +92,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
+  console.log('sopp');
   event.waitUntil(
     caches
       .keys()

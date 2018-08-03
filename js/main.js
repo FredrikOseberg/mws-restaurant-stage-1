@@ -1,5 +1,5 @@
 import DBHelper from './dbhelper';
-import { addSavedReviews } from './helpers';
+import { addSavedReviews, flashMessage } from './helpers';
 import '../css/styles.css';
 
 let restaurants, neighborhoods, cuisines;
@@ -132,11 +132,78 @@ const fillRestaurantsHTML = (restaurants = self.restaurants) => {
 };
 
 /**
+ * Update the heart in the UI
+ */
+const updateHeart = restaurant => {
+  const favoriteButtons = Array.from(document.getElementsByClassName('fav-button-group'));
+  const favoriteButton = favoriteButtons[Number(restaurant.id) - 1];
+  const favoriteButtonHeart = favoriteButton.firstChild;
+  favoriteButton.innerHTML = '';
+
+  const heart = document.createElement('i');
+  heart.id = 'heartIcon';
+  if (favoriteButtonHeart.classList.contains('favorited')) {
+    heart.className = 'far fa-heart unfavorited';
+  } else {
+    heart.className = 'fas fa-heart favorited';
+  }
+
+  favoriteButton.appendChild(heart);
+};
+
+/**
+ * Handle favorite button click and make database call
+ */
+
+const handleFavoriteButtonClick = restaurant => {
+  if (navigator.onLine) {
+    const apiCall = DBHelper.updateFavoriteRestaurant(restaurant);
+    apiCall.then(response => {
+      updateRestaurants();
+    });
+  } else {
+    let savedRestaurants = JSON.parse(localStorage.getItem('savedRestaurants'));
+
+    if (savedRestaurants && savedRestaurants.length > 0) {
+      const restaurantExists = savedRestaurants.find(savedRestaurant => savedRestaurant.id === restaurant.id);
+
+      if (restaurantExists) {
+        savedRestaurants = savedRestaurants.filter(savedRestaurant => !(savedRestaurant.id === restaurant.id));
+      } else {
+        savedRestaurants.push(restaurant);
+      }
+      console.log(savedRestaurants);
+      localStorage.setItem('savedRestaurants', JSON.stringify(savedRestaurants));
+    } else {
+      localStorage.setItem('savedRestaurants', JSON.stringify([restaurant]));
+    }
+    updateHeart(restaurant);
+
+    flashMessage('You are currently offline. Your favorite restaurants will be updated when you go back online.');
+  }
+};
+
+/**
  * Create restaurant HTML.
  */
 const createRestaurantHTML = restaurant => {
   if (restaurant.name === 'Casa Enrique') restaurant.photograph = 10;
   const li = document.createElement('li');
+
+  const favoriteButton = document.createElement('button');
+  favoriteButton.id = 'restaurant-favorite-button';
+  favoriteButton.className = 'fav-button-group';
+
+  const heart = document.createElement('i');
+  heart.id = 'heartIcon';
+  if (restaurant.is_favorite === 'true') {
+    heart.className = 'fas fa-heart favorited';
+  } else {
+    heart.className = 'far fa-heart unfavorited';
+  }
+
+  favoriteButton.appendChild(heart);
+  favoriteButton.addEventListener('click', () => handleFavoriteButtonClick(restaurant));
 
   const image = document.createElement('img');
   image.className = 'restaurant-img';
@@ -148,6 +215,7 @@ const createRestaurantHTML = restaurant => {
 
   const container = document.createElement('div');
   container.className = 'restaurant-list-container';
+  container.append(favoriteButton);
 
   const name = document.createElement('h2');
   name.innerHTML = restaurant.name;
@@ -253,7 +321,24 @@ const initServiceWorker = () => {
   }
 };
 
-const handleOnline = () => addSavedReviews();
+const makeSavedRequests = () => {
+  if (!navigator.onLine) return;
+  const savedRequests = JSON.parse(localStorage.getItem('savedRestaurants'));
+
+  if (savedRequests && savedRequests.length > 0) {
+    const promises = Promise.all(savedRequests.map(restaurant => DBHelper.updateFavoriteRestaurant(restaurant)));
+
+    promises.then(() => {
+      localStorage.setItem('savedRestaurants', JSON.stringify([]));
+      updateRestaurants();
+    });
+  }
+};
+
+const handleOnline = () => {
+  addSavedReviews();
+  makeSavedRequests();
+};
 
 const setupEventListeners = () => {
   document.querySelector('#neighborhoods-select').addEventListener('change', updateRestaurants);

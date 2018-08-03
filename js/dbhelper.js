@@ -213,4 +213,17 @@ export default class DBHelper {
       .then(response => callback())
       .catch(error => console.log(error));
   }
+
+  static updateFavoriteRestaurant(restaurant) {
+    let urlToPut = `${DBHelper.DATABASE_URL}restaurants/${restaurant.id}`;
+    if (restaurant.is_favorite === 'true') {
+      urlToPut += '/?is_favorite=false';
+    } else {
+      urlToPut += '/?is_favorite=true';
+    }
+
+    return fetch(urlToPut, {
+      method: 'PUT'
+    });
+  }
 }
