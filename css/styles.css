@@ -112,7 +112,7 @@
   margin: 0 20px 40px 0;
 }
 .filter-options select {
-  background-color: #cecccc;
+  background-color: #f0eeee;
   border: 1px solid #fff;
   font-family: Arial, sans-serif;
   font-size: 11pt;
@@ -161,7 +161,7 @@
   border-top-left-radius: 3px;
 }
 #restaurants-list li h2 {
-  color: #f18200;
+  color: #282936;
   font-family: Arial, sans-serif;
   font-size: 14pt;
   font-weight: 200;
@@ -176,7 +176,7 @@
 }
 #restaurants-list li a,
 .reviews-form-submit-button {
-  background-color: orange;
+  background-color: #4555ce;
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
@@ -238,7 +238,7 @@
   width: 100%;
 }
 #restaurant-name {
-  color: #f18200;
+  color: #272934;
   font-family: Arial, sans-serif;
   font-size: 20pt;
   font-weight: 200;
@@ -278,7 +278,7 @@
 }
 #reviews-container h2,
 #reviews-form h3 {
-  color: #f58500;
+  color: #272934;
   font-size: 24pt;
   font-weight: 300;
   letter-spacing: -1px;
@@ -333,7 +333,7 @@
   font-size: 0.8rem;
 }
 #reviews-list .reviews-star {
-  color: gold;
+  color: #485adf;
   margin: 0 1px;
 }
 #reviews-form-container {

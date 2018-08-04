@@ -111,7 +111,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  console.log('sup');
   const { request } = event;
   if (request.url.includes(RESTAURANT_URL)) {
     event.respondWith(handleRestaurantFetch(request));
