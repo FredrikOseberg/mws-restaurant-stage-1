@@ -1,5 +1,6 @@
 import DBHelper from './dbhelper';
 import { addSavedReviews, flashMessage } from './helpers';
+import { initServiceWorker } from './initSw';
 import '../css/styles.css';
 
 let restaurant;
@@ -296,6 +297,7 @@ const setupEventListeners = () => {
 };
 
 document.addEventListener('DOMContentLoaded', event => {
+  initServiceWorker();
   getReviews();
   setupEventListeners();
   fetchRestaurantFromURL(() => fillBreadcrumb());

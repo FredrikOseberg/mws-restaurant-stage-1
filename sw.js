@@ -77,6 +77,7 @@ self.addEventListener('install', event => {
     '/',
     '/js/dbhelper.js',
     '/dist/main.js',
+    '/manifest.json',
     '/dist/restaurant_info.js',
     '/img/exclamation-triangle.svg',
     '/img/heart.svg',
@@ -111,7 +112,6 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   const { request } = event;
-  console.log('hi');
   if (request.url.includes(RESTAURANT_URL)) {
     event.respondWith(handleRestaurantFetch(request));
   } else if (request.url.includes(REVIEWS_POST_URL)) {
