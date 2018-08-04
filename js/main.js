@@ -271,15 +271,6 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
   });
 };
 
-/**
- * Handle
- */
-
-const handleUpdateNotificationClick = worker => {
-  worker.postMessage({ action: 'skipWaiting' });
-  document.getElementsByTagName('body')[0].removeChild(document.getElementsByClassName('version-button')[0]);
-};
-
 const makeSavedRequests = () => {
   if (!navigator.onLine) return;
   const savedRequests = JSON.parse(localStorage.getItem('savedRestaurants'));

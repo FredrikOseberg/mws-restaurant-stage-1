@@ -297,6 +297,7 @@ const setupEventListeners = () => {
 };
 
 document.addEventListener('DOMContentLoaded', event => {
+  console.log('loaded');
   initServiceWorker();
   getReviews();
   setupEventListeners();

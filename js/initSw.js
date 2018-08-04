@@ -1,4 +1,13 @@
 /**
+ * Handle update notification click
+ */
+
+const handleUpdateNotificationClick = worker => {
+  worker.postMessage({ action: 'skipWaiting' });
+  document.getElementsByTagName('body')[0].removeChild(document.getElementsByClassName('version-button')[0]);
+};
+
+/**
  * Notify a user that a newer version is available
  */
 
